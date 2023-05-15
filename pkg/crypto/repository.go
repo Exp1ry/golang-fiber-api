@@ -3,7 +3,7 @@ package cryptoBrokers
 import (
 	"context"
 	"errors"
-
+"fmt"
 	"api.ainvest.com/controller/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -78,40 +78,37 @@ func (r *repository) NewCryptoBroker(broker *models.CryptoBrokerModel) error {
 }
 
 func (r *repository) EditCryptoBroker(id string, updates map[string]interface{}) (bool,error){
-existBroker := models.CryptoBrokerModel{}
-
-ctx := context.Background()
-
-objID,err := primitive.ObjectIDFromHex(id)
-if err!= nil {
-	return false,err
-}
-
- resp := r.collection.FindOne(ctx, bson.M{"_id":objID})
- if resp.Err()== mongo.ErrNoDocuments {
-	return false,errors.New("No document found.")
- }
-
- err = resp.Decode(&existBroker)
- if err!= nil {
-	return false,err
- }
-
- for k, v := range updates {
-_, err := r.collection.UpdateByID(ctx, id, bson.M{k:v})
-if err!= nil {
-	return false,err
-}
- }
-
- return true,nil
+	realID,err:= primitive.ObjectIDFromHex(id)
+	if err!= nil {
+		return false, err
+	}
+		filter := bson.M{"_id": realID}
+	
+		for k, v := range updates {
+	
+	if k == "_id" {
+		return false, errors.New("cannot change an ID")
+	}
+			update := bson.M{"$set": bson.M{k: v}}
+			_, err := r.collection.UpdateOne(context.Background(), filter, update)
+			if err != nil {
+				fmt.Println(err)
+				return false, err
+			}
+		}
+	
+		return true, nil
 }
 
 func (r *repository) RemoveCryptoBroker(id string) (bool,error){
 
+	realID, err := primitive.ObjectIDFromHex(id)
+	if err!= nil {
+		return false, err
+	}
 
 ctx := context.Background()
-resp := r.collection.FindOneAndDelete(ctx, id)
+resp := r.collection.FindOneAndDelete(ctx, bson.M{"_id":realID})
 if resp.Err() == mongo.ErrNoDocuments {
 	return  false, errors.New("No document found.")
 }

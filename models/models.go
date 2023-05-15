@@ -3,14 +3,34 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type NFTBrokerModel struct {
-ID primitive.ObjectID `json:"_id"`
+ID primitive.ObjectID `json:"_id" bson:"_id"`
+IDReal int64 `json:"id" bson:"id"`
 Name string `json:"name"`
-Description string `json:"description"`
+NFTS int64 `json:"nfts"`
+Chains string `json:"chains"`
+Utilities string `json:"utilities"`
+Commission string `json:"commission"`
+CreditCard string `json:"creditCard"`
+Paypal string `json:"paypal"`
+ActiveSince int64 `json:"activeSince"`
+
 }
 type CryptoBrokerModel struct {
-ID primitive.ObjectID `json:"_id"`
+ID primitive.ObjectID `json:"_id" bson:"_id"`
+IDReal int64 `json:"id" bson:"id"`
+Slug string `json:"slug"`
 Name string `json:"name"`
+YearEstablished string `json:"yearEstablished"`
+Country string `json:"country"`
 Description string `json:"description"`
+WebsiteUrl string `json:"websiteUrl"`
+ImageUrl string `json:"imageUrl"`
+HasTradingIncentive bool `json:"hasTradingIncentive"`
+TrustScore int32 `json:"trustScore"`
+TrustScoreRank int32 `json:"trustScoreRank"`
+TradeVolume24hBtc float64 `json:"tradeVolume24hBtc"`
+TradeVolume24hBtcNormalized float64 `json:"tradeVolume24hBtcNormalized"`
+OurScore any `json:"ourScore"`
 }
 type StockBrokerModel struct {
 ID primitive.ObjectID `json:"_id"`

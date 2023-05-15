@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"errors"
-
+"fmt"
 	"api.ainvest.com/controller/api/presenters"
 	"api.ainvest.com/controller/models"
 	cryptoBrokers "api.ainvest.com/controller/pkg/crypto"
@@ -15,6 +15,7 @@ func GetAllCryptoBrokers(service cryptoBrokers.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error{
 		resp, err := service.GetAllCryptoBrokers()
 		if err!= nil{
+			fmt.Println(err)
 			return c.Status(401).JSON(presenters.DynamicResponse(map[string]string{},  "", err, true))
 		}
 
@@ -82,12 +83,12 @@ func AddNewCryptoBroker(service cryptoBrokers.Service) fiber.Handler {
 func DeleteCryptoBroker(service cryptoBrokers.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var body struct {
-			ID string `json:_id"`
+			ID string `json:"_id"`
 		}
 
 		err := c.BodyParser(&body)
 		if err!= nil {
-			return c.Status(400).JSON(presenters.DynamicResponse(map[string]string{}, "",  err, true))
+			return c.Status(400).JSON(presenters.DynamicResponse(map[string]string{}, err.Error(),  err, true))
 
 		}
 		

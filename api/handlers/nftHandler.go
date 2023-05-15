@@ -7,12 +7,14 @@ import (
 	"api.ainvest.com/controller/models"
 	nftBroker "api.ainvest.com/controller/pkg/nft"
 	"github.com/gofiber/fiber/v2"
+	"fmt"
 )
 
 func GetAllNftBrokers(service nftBroker.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error{
 		resp, err := service.GetAllNFTBrokers()
 		if err!= nil{
+			fmt.Println(err)
 			return c.Status(401).JSON(presenters.DynamicResponse(map[string]string{}, "",  err, true))
 		}
 
@@ -32,14 +34,14 @@ err := c.BodyParser(&body)
 if err!= nil {
 	return c.Status(400).JSON(presenters.DynamicResponse(map[string]string{}, "",  err, true))
 }
-
 if body.ID == "" {
 	return c.Status(400).JSON(presenters.DynamicResponse(map[string]string{}, "",  errors.New("Please pass the correct parameters"), true))
-
+	
 }
 
-		ok, err := service.UpdateNFTBroker(body.ID, body.Update)
+ok, err := service.UpdateNFTBroker(body.ID, body.Update)
 if err!= nil {
+	fmt.Println(err)
 	return c.Status(400).JSON(presenters.DynamicResponse(map[string]string{}, "",  err, true))
 
 }
@@ -80,7 +82,7 @@ func AddNewNftBroker(service nftBroker.Service) fiber.Handler {
 func DeleteNftBroker(service nftBroker.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var body struct {
-			ID string `json:_id"`
+			ID string `json:"_id"`
 		}
 
 		err := c.BodyParser(&body)

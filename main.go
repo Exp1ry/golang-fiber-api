@@ -46,8 +46,8 @@ if err!= nil {
 
 forexCol := db.Collection("forexandstocks")
 stocksCol := db.Collection("stocksBrokers")
-cryptoCol := db.Collection("cryptoBrokers")
-nftCol:= db.Collection("nftBrokers")
+cryptoCol := db.Collection("cryptos")
+nftCol:= db.Collection("nfts")
 
 
 cryptoRepo := cryptoBrokers.NewRepo(cryptoCol)
