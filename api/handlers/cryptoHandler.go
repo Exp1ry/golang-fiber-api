@@ -2,17 +2,29 @@ package handlers
 
 import (
 	"errors"
-"fmt"
+	"fmt"
+
 	"api.ainvest.com/controller/api/presenters"
 	"api.ainvest.com/controller/models"
 	cryptoBrokers "api.ainvest.com/controller/pkg/crypto"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 
 
 func GetAllCryptoBrokers(service cryptoBrokers.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error{
+		token, ok := c.Locals("token").(*jwt.Token)
+		if ok {
+			
+			claims, ok := token.Claims.(jwt.MapClaims)
+			if ok {
+
+				email := claims["email"].(string)
+				fmt.Println(email)
+			}
+		}
 		resp, err := service.GetAllCryptoBrokers()
 		if err!= nil{
 			fmt.Println(err)

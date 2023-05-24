@@ -9,12 +9,11 @@ import (
 	cryptoBrokers "api.ainvest.com/controller/pkg/crypto"
 	forexBrokers "api.ainvest.com/controller/pkg/forex"
 	nftBroker "api.ainvest.com/controller/pkg/nft"
-	stockBroker "api.ainvest.com/controller/pkg/stocks"
+	"api.ainvest.com/controller/pkg/users"
 	fiber "github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-
+	"github.com/joho/godotenv"
 )
 
 func HandleErr(err error) error{
@@ -39,32 +38,43 @@ app.Use(cors.New())
 app.Use(logger.New())
 api := app.Group("/api/v1")
 
+crypto := api.Group("/crypto")
+nft := api.Group("/nft")
+stocks := api.Group("/stocks")
+admin := api.Group("/admin")
+user := api.Group("/users")
+// user.Use(middleware.ValidateToken())
+// crypto.Use(middleware.ValidateToken())
+// nft.Use(middleware.ValidateToken())
+// stocks.Use(middleware.ValidateToken())
+
+
 db, cancel, err := db.ConnectToDB()
 if err!= nil {
 	fmt.Errorf("Error connecting to DB, %e\n",err)
 }
 
 forexCol := db.Collection("forexandstocks")
-stocksCol := db.Collection("stocksBrokers")
 cryptoCol := db.Collection("cryptos")
 nftCol:= db.Collection("nfts")
-
+usersCol := db.Collection("users")
+adminCol := db.Collection("admins")
 
 cryptoRepo := cryptoBrokers.NewRepo(cryptoCol)
 nftRepo := nftBroker.NewRepo(nftCol)
 forexRepo := forexBrokers.NewRepo(forexCol)
-stocksRepo := stockBroker.NewRepo(stocksCol)
+usersRepo := users.NewRepo(usersCol, adminCol)
 
 cryptoService := cryptoBrokers.NewService(cryptoRepo)
 nftService := nftBroker.NewService(nftRepo)
 forexService := forexBrokers.NewService(forexRepo)
-stockService := stockBroker.NewService(stocksRepo)
+usersService := users.NewService(usersRepo)
 
-
-routes.CryptoRoutes(api, cryptoService)
-routes.NftRoutes(api, nftService)
-routes.ForexRoutes(api, forexService)
-routes.StockRoutes(api, stockService)
+routes.CryptoRoutes(crypto, cryptoService)
+routes.NftRoutes(nft, nftService)
+routes.ForexRoutes(stocks, forexService)
+routes.UserRoutes(user, usersService)
+routes.AdminRoutes(admin, usersService)
 
 
 app.Listen(port)

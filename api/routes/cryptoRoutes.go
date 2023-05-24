@@ -7,8 +7,8 @@ import (
 )
 
 func CryptoRoutes(api fiber.Router, service cryptoBrokers.Service){
-	api.Get("/crypto/all", handlers.GetAllCryptoBrokers(service))
-	api.Post("/crypto/new", handlers.AddNewCryptoBroker(service))
-	api.Put("/crypto/edit", handlers.UpdateOneCryptoBroker(service))
-	api.Delete("/crypto/remove", handlers.DeleteCryptoBroker(service))
+	api.Get("/all", handlers.GetAllCryptoBrokers(service))
+	api.Post("/new", handlers.AddNewCryptoBroker(service))
+	api.Put("/edit", handlers.UpdateOneCryptoBroker(service))
+	api.Delete("/remove", handlers.DeleteCryptoBroker(service))
 }

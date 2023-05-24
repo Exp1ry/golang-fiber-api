@@ -8,8 +8,8 @@ import (
 
 
 func NftRoutes(api fiber.Router, service nftBroker.Service){
-	api.Get("/nft/all", handlers.GetAllNftBrokers(service))
-	api.Post("/nft/new", handlers.AddNewNftBroker(service))
-	api.Put("/nft/edit", handlers.UpdateOneNftBroker(service))
-	api.Delete("/nft/remove", handlers.DeleteNftBroker(service))
+	api.Get("/all", handlers.GetAllNftBrokers(service))
+	api.Post("/new", handlers.AddNewNftBroker(service))
+	api.Put("/edit", handlers.UpdateOneNftBroker(service))
+	api.Delete("/remove", handlers.DeleteNftBroker(service))
 }

@@ -7,8 +7,8 @@ import (
 )
 
 func ForexRoutes(api fiber.Router, service forexBrokers.Service){
-	api.Get("/forex/all", handlers.GetAllForexBrokers(service))
-	api.Post("/forex/new", handlers.AddNewForexBroker(service))
-	api.Put("/forex/edit", handlers.UpdateOneForexBroker(service))
-	api.Delete("/forex/remove", handlers.DeleteForexBroker(service))
+	api.Get("/all", handlers.GetAllForexBrokers(service))
+	api.Post("/new", handlers.AddNewForexBroker(service))
+	api.Put("/edit", handlers.UpdateOneForexBroker(service))
+	api.Delete("/remove", handlers.DeleteForexBroker(service))
 }

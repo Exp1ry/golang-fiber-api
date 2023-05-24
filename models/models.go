@@ -1,17 +1,21 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type NFTBrokerModel struct {
 ID primitive.ObjectID `json:"_id" bson:"_id"`
 IDReal int64 `json:"id" bson:"id"`
 Name string `json:"name"`
 NFTS int64 `json:"nfts"`
-Chains string `json:"chains"`
-Utilities string `json:"utilities"`
+Chains []string `json:"chains"`
+Utilities []string `json:"utilities"`
 Commission string `json:"commission"`
-CreditCard string `json:"creditCard"`
-Paypal string `json:"paypal"`
+CreditCard bool `json:"creditCard"`
+Paypal bool `json:"paypal"`
 ActiveSince int64 `json:"activeSince"`
 
 }
@@ -32,11 +36,7 @@ TradeVolume24hBtc float64 `json:"tradeVolume24hBtc"`
 TradeVolume24hBtcNormalized float64 `json:"tradeVolume24hBtcNormalized"`
 OurScore any `json:"ourScore"`
 }
-type StockBrokerModel struct {
-ID primitive.ObjectID `json:"_id"`
-Name string `json:"name"`
-Description string `json:"description"`
-}
+
 type ForexBrokerModel struct {
 	ID primitive.ObjectID `json:"_id" bson:"_id"`
     RealID int64 `json:"id" bson:"id"`
@@ -79,4 +79,40 @@ type ForexBrokerModel struct {
     Twitter                string    `json:"twitter" bson:"twitter,omitempty"`
     FoundationYear         int       `json:"foundationYear" bson:"foundationYear,omitempty"`
    
+}
+
+
+type UserModel struct {
+    ID primitive.ObjectID `json:"_id" bson:"_id"`
+    Name string `json:"name"`
+    NickName string `json:"nickName"`
+    Email string `json:"email"`
+    EmailVerified bool `json:"emailVerified"`
+    Password string`json:"password"`
+    PhoneNumber string`json:"phoneNumber"`
+    PhoneVerified bool `json:"phoneVerified"` 
+    LastLogin time.Time `json:"lastLogin"`
+    Nationality string `json:"nationality"`
+    DateOfBirth time.Time `json:"dateOfBirth"`
+    CountryOfResident string `json:"countryOfResident"`
+    Picture string `json:"picture"`
+    City string `json:"city"`
+    Language string `json:"language"`
+    AnnualIncome string `json:"annualIncome"`
+    CountyOfsourceOfFunds string `json:"countryOfsourceOfFunds"`
+    Gender string `json:"gender"`
+    Age uint32 `json:"age"`
+    UserAgent []string `json:"userAgent"`
+    Currency string `json:"currency"`
+    IsDeleted bool `json:"isDeleted"`
+    DeleteReason string `json:"deleteReason"`
+  
+}
+
+type AdminModel struct {
+    ID primitive.ObjectID `json:"_id" bson:"_id"`
+    FirstName string `json:"first_name"`
+    LastName string `json:"last_name"`
+    Email string `json:"email"`
+    Password string `json:"password"`
 }
